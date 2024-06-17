@@ -1,1 +1,76 @@
-
+#Title of Project : Hill and Valley Prediction using Logistic Regression method
+#Objective : To develop an Machine Learning Model to predict Hill and Valley using Logistic Regression method that can accurately classify geographical locations as either hills or valleys based on a set of input features. The model will be trained on a labeled dataset of geographical features and their corresponding classifications, and then evaluated on a separate test dataset to measure its performance. The ultimate goal of this project is to provide a useful tool for identifying hills and valleys in various geographic locations, which can have important applications in fields such as geology, agriculture, and urban planning.
+# Import Library :
+#import library pandas
+import pandas as pd
+#Import Data :
+#dataset
+hill = pd.read_csv('https://github.com/YBI-Foundation/Dataset/raw/main/Hill%20Valley%20Dataset.csv')
+hill.head()
+hill.info()
+#Describe Data :
+hill.describe()
+hill.columns
+print(hill.columns.tolist())
+hill.shape
+#Get Unique Values(class) in Y Variable
+hill['Class'].value_counts()
+hill.groupby('Class').mean()
+#Define Target Variable (y) and Feature Variables (X)
+y = hill['Class']
+y.shape
+y
+X = hill.drop('Class', axis=1)
+X.shape
+X
+#Data Visualization :
+#Get Plot of First Two Rows
+# import library
+import matplotlib.pyplot as plt
+plt.plot(X.iloc[0,:])
+plt.title('Valley');
+plt.plot(X.iloc[1,:])
+plt.title('Hill');
+#Data Preprocessing :
+#Get X Variables Standardized
+from sklearn.preprocessing import StandardScaler
+ss = StandardScaler()
+X = ss.fit_transform(X)
+X
+X.shape
+#Train Test Split :
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.3, stratify=y, random_state=2529)
+X_train.shape, X_test.shape, y_train.shape, y_test.shape
+#Modeling :
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model.fit(X_train,y_train)
+#Get Model Prediction :
+y_pred = model.predict(X_test)
+y_pred.shape
+y_pred
+#Probability of each Predicted Class :
+model.predict_proba(X_test)
+#Model Evaluation :
+from sklearn.metrics import confusion_matrix, classification_report
+print(confusion_matrix(y_test,y_pred))
+print(classification_report(y_test,y_pred))
+#Future Predictions :
+# lets select a random sample from existing dataset as new value
+#Steps to follow
+# 1)Extract random row using sample function
+# 2)Separate X and y
+# 3)Standerdize X
+# 2)Predict
+X_new = hill.sample(1)
+X_new
+X_new.shape
+X_new = X_new.drop('Class', axis=1)
+X_new
+X_new.shape
+X_new = ss.fit_transform(X_new)
+y_pred_new = model.predict(X_new)
+y_pred_new
+model.predict_proba(X_new)
+# Explanation :This project is based on the Dasa science using Python Programming language.The main purpose of creating this project is to develop a predictive model using logistic regression that can accurately classify geographical locations as either hills or valleys based on a set of input features. The model will be trained on a labeled dataset of geographical features and their corresponding classifications, and then evaluated on a separate test dataset to measure its performance. The ultimate goal of this project is to provide a useful tool for identifying hills and valleys in various geographic locations, which can have important applications in fields such as geology, agriculture, and urban planning.
